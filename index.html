@@ -8,9 +8,11 @@
 </head>
 <script src="./myjs.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<body>
-    <button onclick="Connect()" >start</button>
-    <button onclick="PrintJSON()" >start</button>
+<body onload="Connect()">
+    <div id="pannel-search">
+       Insect name of game: <input id="game_name" placeholder="game name">
+       <input type="button" value="search" onclick="search(document.getElementById('game_name').value)" />
+    </div>
 <div id="Game"></div>
 <form>
 <div>
