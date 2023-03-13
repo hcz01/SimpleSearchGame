@@ -1,82 +1,74 @@
 var JSONobj;
 var games;
 
-function Connect(){
-    var getJSON = function(url, callback) {
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
+$(document).ready(function(){
+    $('#game_name').keypress(debounce(function (event) {
         
-        xhr.responseType = 'json';
-    
-        xhr.onload = function() {
-    
-            var status = xhr.status;
-    
-            if (status == 200) {
-                callback(null, xhr.response);
-            } else {
-                callback(status);
+          var xmlhttp=new XMLHttpRequest();
+          xmlhttp.onreadystatechange=function() {
+            if (this.readyState==4 && this.status==200) {
+              var data=JsonReader(this.responseText);
+              ShowData(data,"Games");
+              document.getElementById("Games").style.border="1px solid #A5ACB2";
             }
-        };
-    
-        xhr.send();
+          }
+          xmlhttp.open("GET","indexphp.php?q="+$('#game_name').val(),true);
+          xmlhttp.send();
+      }, 500));
+
+
+});
+
+
+
+//delay insect input 
+  function debounce(fn, delay) {
+    var timer = null;
+    return function () {
+      var context = this, args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        fn.apply(context, args);
+      }, delay);
     };
-    //the request to get json from steam include the game of appid and name
-    getJSON('https://api.steampowered.com/ISteamApps/GetAppList/v2/',  function(err, data) {
-    
-        if (err != null) {
-            console.error(err);
-        } else {
-                JSONobj=data;
-                listgame=JSONobj.applist.apps;
+  }
 
-        }
-        
-    });
-
-}
-
-
-
-function search(str){
-
-    var result=false;
-    var GM=document.getElementById("Game");
-    removeAllChildNodes(GM);
-    var node =  null;
-    const br=document.createElement("br");
-    for(var i=0;i<listgame.length;i++){
-        
-        if(listgame[i].name.includes(str)){
-            result=true;
-            const div=document.createElement("div"); 
-            const a=document.createElement("a"); 
-            node = document.createTextNode(listgame[i].name);
-            a.setAttribute("href","https://store.steampowered.com/app/"+listgame[i].appid);
-            a.appendChild(node);
-            div.appendChild(a);
-            GM.appendChild(div);
-           
-        }
-    }
-    if(result ==false)
-    {
-        const para = document.createElement("div");
-        node = document.createTextNode("null");
-        para.appendChild(node);
-        GM.appendChild(para);
-        GM.appendChild(document.createElement("br"));
-    }
-        
-
-    
-           
-
-}
+ 
+  
 function removeAllChildNodes(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
 
+}
+
+  
+
+
+function JsonReader(result){
+        var data = JSON.parse(result);
+        return data;
+}
+function ShowData(data,ElementID){
+    var GM=document.getElementById(ElementID);
+    removeAllChildNodes(GM);
+    for (let index = 0; index <data.length;index++) {
+        //not exist the game
+        if(typeof data[index].name  === 'undefined')
+           break;
+        //is not game but like packege 
+        if( data[index].detail === null)
+            continue;
+           const div=document.createElement("div"); 
+           const a=document.createElement("a");
+           const img=document.createElement('img'); 
+           node = document.createTextNode(data[index].name);
+            img.setAttribute("src",data[index].detail.header_image);
+           a.setAttribute("href","https://store.steampowered.com/app/"+data[index].appid);
+           a.appendChild(node);
+           a.appendChild(img);
+           div.appendChild(a);
+       
+           GM.appendChild(div);
+    }
 }

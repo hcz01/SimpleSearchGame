@@ -4,23 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <title>SteaMGameData</title>
 </head>
 <script src="./myjs.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<body onload="Connect()">
+
+<body onload="">
     <div id="pannel-search">
-       Insect name of game: <input id="game_name" placeholder="game name">
-       <input type="button" value="search" onclick="search(document.getElementById('game_name').value)" />
+      <input id="game_name" type="text" size="50" placeholder="game name" >
+
     </div>
-<div id="Game"></div>
-<form>
-<div>
-    
-</div>
-
-
-</form>
-
+<div id="Games" ></div>
+<div id="List_Game" ></div>
 </body>
 </html>
