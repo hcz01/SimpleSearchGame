@@ -12,8 +12,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 //get file json from url
 
 $url='https://api.steampowered.com/ISteamApps/GetAppList/v2/';
-header("Content-Type: application/json");
-$data=file_get_contents($url);
+$data=requestAPi($url,null);
 $characters=json_decode($data,true);
 $apps=$characters['applist']['apps'];
 
@@ -28,7 +27,7 @@ if (strlen($q)>0) {
         if($index==10)
             break;
 
-        if(str_contains($app['name'],$q))
+        if(stripos($app['name'], $q) !== false)
                {
                 $index++;
                 array_push($found,$data = [
@@ -49,9 +48,15 @@ if (strlen($q)>0) {
     echo $response;
 
 function FindDetails($appid){  
-$urldetails='https://store.steampowered.com/api/appdetails/?appids='.$appid.'&cc=EE&l=english&v=1';  
-header("Content-Type: application/json");
-$data=file_get_contents($urldetails);
+   
+$parameter=array(
+    'appids' => $appid,
+    'cc' =>  'EE',
+    'l' => 'english',
+    'v' => '1',
+);
+$urldetails='https://store.steampowered.com/api/appdetails/?';  
+$data=requestAPi($urldetails,$parameter);
 $data=json_decode($data,true);
     if (isset($data[$appid]['data'])) 
         $details=$data[$appid]['data'];
@@ -60,5 +65,22 @@ $data=json_decode($data,true);
 
 return $details ;
 }
+//make a request for api with parameter and it back response
+function requestAPi($url,$parameter){
+    //avoid the error bring convert json error
+    $data = stream_context_create(array(
+        'http' => array(
+            'ignore_errors' => true
+        )
+    ));
+    header("Content-Type: application/json");
+    if(is_null($parameter )==true)
+        $data=file_get_contents($url);
+    else
+        {
+            $url=$url.http_build_query($parameter);
+            $data=file_get_contents($url, false, $data);
+        }
+    return $data;
+}
 ?>
-
