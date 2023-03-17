@@ -75,16 +75,20 @@ function ShowData(data,ElementID){
           div.appendChild(p);
           GM.appendChild(div);
           //add a listener for each game to open new window about that game
-          var buttonAppid = document.getElementById(data[index].appid);
-          buttonAppid.addEventListener('click',function() {redirectWithJson(JSON.stringify(detail));});
-          console.log(data[index].appid+"  :"+ JSON.stringify(detail));
+          AppendListener(data[index].appid,detail);
+
   }
 }
+
+function AppendListener(ElementID,par){
+  var buttonAppid = document.getElementById(ElementID);
+          buttonAppid.addEventListener('click',function() {redirectWithJson(JSON.stringify(par));});
+          console.log(par);
+}
+
 //has the problem the problem i cant use ajax send json file because it compose a URI longer
 function redirectWithJson(str){
-  
   localStorage.setItem('info', str);
-  alert(str);
   var url = './app.php';
   window.location.href = url;
   }

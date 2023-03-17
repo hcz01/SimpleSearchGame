@@ -29,13 +29,16 @@ if (strlen($q)>0) {
 
         if(stripos($app['name'], $q) !== false)
                {
-                $index++;
-                array_push($found,$data = [
-                    'name' => $app['name'],
-                    'appid' => $app['appid'],
-                    'detail' =>FindDetails($app['appid'])
-                        ]);
-                    
+                //if(FindDetails($app['appid'])['type']=="game"){
+                    $index++;
+                    array_push($found,$data = [
+                        'name' => $app['name'],
+                        'appid' => $app['appid'],
+                        'detail' =>FindDetails($app['appid'])
+                            ]);
+                        
+               // }
+               
                }
                             
     }
