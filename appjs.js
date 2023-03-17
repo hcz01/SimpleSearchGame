@@ -14,9 +14,10 @@ $(document).ready(function(){
     var developers=$("<p></p>").text("developers:"+data.developers);
     var publishers=$("<p></p>").text("publishers:"+data.publishers);
     var detailed_description=$("<p></p>").html(data.detailed_description).attr("class","fs-5 col-md-8");
-    var price_overview_final_formatted=$("<p></p>").text("price: "+(typeof data.includes(price_overview)=== 'undefined')?data.price_overview.final_formatted:"nothing");
-    var release_date_date=$("<p></p>").text("release_date_date: "+( typeof  data.includes(release_date) === 'undefined' )?data.release_date.date:"nothing");//data.release_date.date
-    var link=$("<a></a>").text(data.name).attr("class","btn btn-primary btn-lg px-4").attr("href","https://store.steampowered.com/app/"+data.steam_appids);
+    var link=$("<a></a>").text(data.name).attr("class","btn btn-primary btn-lg px-4").attr("href","https://store.steampowered.com/app/"+data.steam_appid);
+    var price_overview_final_formatted=$("<p></p>").text("price: "+data.price_overview.final_formatted);
+    var release_date_date=$("<p></p>").text("release_date_date: "+data.release_date.date);
+   
     }catch(e){
         console.log(e);
     }
